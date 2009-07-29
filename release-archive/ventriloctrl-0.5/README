@@ -1,0 +1,166 @@
+--------------------------
+- VentriloCtrl
+--------------------------
+VentriloCtrl relays a keypress to Ventrilo, even when it has lost focus.
+
+
+--------------------------
+- Table of Contents
+--------------------------
+-1- Prerequisites
+-2- Compiling
+-3- Installing
+-4- Running
+-5- Uninstalling
+-6- Getting Started
+-7- VentriloCtrl Configuration
+-8- Ventrilo Configuration
+-9- FAQ and Help and Problems and Complaints and Hate Mail and Other Stuff
+-10- Licence
+-11- Credits
+-12- Contacts
+
+
+--------------------------
+-1- Prerequisites
+--------------------------
+1) Event Device (included in kernel)
+2) X11 Development Libraries
+
+
+--------------------------
+-2- Compiling
+--------------------------
+# make
+
+
+--------------------------
+-3- Installing
+--------------------------
+# make install
+
+
+--------------------------
+-4- Running
+--------------------------
+# ventriloctrl
+
+
+--------------------------
+-5- Uninstalling
+--------------------------
+# make uninstall
+
+
+--------------------------
+-6- Getting Started
+--------------------------
+Use one of the following to check which device your mouse/keyboard/joystick (whatever you want as your PTT [Push-to-Talk] key) is:
+
+# ls -l /dev/input/by-id/
+lrwxrwxrwx 1 root root 9 Aug 22 10:41 usb-1267_0103-event-kbd -> ../event3
+lrwxrwxrwx 1 root root 9 Aug 22 10:41 usb-Logitech_Logitech_Dual_Action-event-joystick -> ../event5
+lrwxrwxrwx 1 root root 6 Aug 22 10:41 usb-Logitech_Logitech_Dual_Action-joystick -> ../js0
+lrwxrwxrwx 1 root root 9 Aug 22 10:41 usb-Logitech_USB-PS.2_Optical_Mouse-event-mouse -> ../event2
+lrwxrwxrwx 1 root root 9 Aug 22 10:41 usb-Logitech_USB-PS.2_Optical_Mouse-mouse -> ../mouse0
+
+OR
+
+# cat /proc/bus/input/devices
+I: Bus=0003 Vendor=046d Product=c01d Version=0110
+N: Name="Logitech USB-PS/2 Optical Mouse"
+P: Phys=usb-0000:00:1a.0-1/input0
+S: Sysfs=/class/input/input2
+U: Uniq=
+H: Handlers=mouse0 event2 
+B: EV=17
+B: KEY=ff0000 0 0 0 0 0 0 0 0
+B: REL=103
+B: MSC=10
+
+I want to use my mouse, and since we can only use the "event" device types I will not choose "js0" or "mouse0"-- I want to use "event2."
+
+
+--------------------------
+-7- VentriloCtrl Configuration
+--------------------------
+If you haven't do so already run:
+# make
+
+Now run (replacing "event2" with the device you wish to use):
+# ./ventriloctrl /dev/input/event2
+
+What you're seeing is the "Find Key" sub-program, press the key you wish to use for your PTT now, and press Ctrl+C as instructed.
+
+I want to use mouse button 5, so after pushing it I'm given:
+./ventriloctrl /dev/input/event2 276
+
+At this point you'll need to execute Ventrilo first, then run the command you were given.
+
+# ./ventriloctrl /dev/input/event2 276
+
+If VentriloCtrl properly detected Ventrilo then it should be running in silent mode now and telling Ventrilo that you pushed the "A" key any time you use your new PTT key.
+
+
+--------------------------
+-8- Ventrilo Configuration
+--------------------------
+There are a number of things in Wine and Ventrilo that you need to make sure are properly setup at this point:
+
+1) First, check that your audio input (microphone), and your audio output work (speakers) under Linux.
+
+2) Also make sure that both audio input and output work under WINE.
+
+3) Execute Ventrilo, or better yet, use this script (changing paths, sleep time, and parameters as necessary):
+#!/bin/bash
+cd ~/.wine/drive_c/Program\ Files/Ventrilo/
+WINEDEBUG="-all" wine Ventrilo.exe &
+sleep 3
+ventriloctrl /dev/input/event2 276
+
+4) Now in Ventrilo (with ventriloctrl running in the background), click on Setup.
+
+5) Make sure to set these things exactly like below:
+ * Check: "Use Push To Talk Hotkey ( PTT Mode )"
+ * Uncheck: "Use Direct Input to detect Hotkey"
+ * Hotkey: "Keyboard: A" (if you are pushing the key that you setup in the Getting Started section, and it is not appearing as "Keyboard: A" then we have a problem)
+ * Check: "Use Direct Sound" for "Output device"
+ * Uncheck: "Use Direct Sound" for "Input device"
+
+6) Use Ventrilo in all of it's glory!
+
+
+--------------------------
+-9- FAQ and Help and Problems and Complaints and Hate Mail and Other Stuff
+--------------------------
+Seriously, don't make me regret rewriting this app and then giving out my email address as a support line... please. In fact, before you email me please post in a message board for your distrobution of Linux with your problem first, then email me: caleb@calebgray.com
+
+
+--------------------------
+-10- Licence
+--------------------------
+Read LICENCE
+
+
+--------------------------
+-11- Credits
+--------------------------
+Original Code by Adam Pierce - http://www.doctort.org/adam/ (based on http://www.doctort.org/adam/nerd-notes/x11-fake-keypress-event.html)
+
+find_window() function contributed by Markus "xcow" Lindqvist.
+
+README written by Niko "np1" Ikonen who also conceptualized the original idea.
+
+Toni "hifi" Spets who glued the pieces together and maintains the code base.
+
+Rewrite by Caleb Gray.
+
+
+--------------------------
+-12- Contacts
+--------------------------
+adam@doctort.org
+hifi@gmail.com
+alex@1stleg.com
+caleb@calebgray.com
+

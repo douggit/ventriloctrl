@@ -1,0 +1,85 @@
+Ventriloctrl
+-------------
+Ventriloctrl is program to send keypresses to Ventrilo client even 
+if it is not on top.  
+
+
+Requirements
+------------
+Event Device included in kernel
+Xorg(Xfree?) development libraries 
+Reading rights for event device
+
+Compiling
+---------
+# make
+
+Installing
+----------
+Not yet implemented
+
+Running
+-------
+# ./runctrl.sh
+
+By default it listens /dev/input/event0 for key 86 ('<' in finnish layout) and sends key A to Ventrilo. 
+
+Configuring
+------------
+If you want change settings edit runctrl.sh
+
+You might want to change the default event device if that is not your keyboard. (Support for mouse etc. is not yet 
+implemented)
+You can find right device by # cat /proc/bus/input/devices
+
+Find your keyboard and find a line like this  "H: Handlers=kbd event3"
+event3 tells you that right value for EVENT_DEVICE variable is /dev/input/event3
+
+You can also change the key that program listens for.
+
+Use findkey utility to get right code for a key.
+# ./findkey <device>
+Replace <device> with your keyboard device, /dev/input/event3 for example.
+
+Then press the key and you will see something like this.
+key 86 state 1
+That tells you that key code for the button you just pressed is 86.
+ 
+
+No rights to read event device?
+
+###########
+# WARNING #
+###########
+This is totally wrong way to do this and don't even try if you are not only user.
+
+Run next as superuser (root)
+# chown <your username> /dev/input/eventx
+where x is number of right event device.
+
+Using
+-----
+Go to settings and hotkey. Press the button what you chosen
+and you should see A coming there if you did't edit the 
+sources.
+
+
+Licence
+-------
+Read LICENCE
+
+Credits
+-------
+Original code by Adam Pierce - http://www.doctort.org/adam/
+http://www.doctort.org/adam/nerd-notes/x11-fake-keypress-event.html
+
+find_window() -function contributed by Markus "xcow" Lindqvist
+
+README written by Niko "np1" Ikonen who also gave the original idea.
+
+Toni "hifi" Spets who glued the pieces together and maintains the code base
+
+
+Contact
+-------
+hifi@gmail.com

@@ -1,0 +1,26 @@
+v0.4
+===
+I ended up using xevie as its a slightly better solution.  Other methods are qt, gtk specific and they also have scoping issues.  This should pretty much be global if i am correct.
+
+I didnt not bother updating the findkey file as its trivial to back port and standard ascii should work for key codes.  Note there is no mouse listener!
+
+You will need to install xevie and add an extension to the xorg conf file.
+
+Section "Extensions"
+        Option          "XEVIE"                 "enable"
+EndSection
+
+I left some hack code in there for trying to regulate the crazy auto repeat as XkbSetDetectableAutoRepeat does not work!  If figure it out please let me know! 
+
+Let me know if you have any questions/ideas. 
+alex@1stleg.com
+
+v0.3 
+====
+First public release
+Cleaned the code
+Using command-line parameters
+Better documentation
+
+v0.2 find_window() -function added
+v0.1 Initial release 
